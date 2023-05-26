@@ -14,6 +14,7 @@ use Manticoresearch\Buddy\Core\Error\QueryParseError;
 use Manticoresearch\Buddy\Core\ManticoreSearch\Endpoint as ManticoreEndpoint;
 use Manticoresearch\Buddy\Core\Network\Request;
 use Manticoresearch\Buddy\Core\Plugin\BasePayload;
+use PHPSQLParser\PHPSQLParser;
 
 /**
  * This is simple do nothing request that handle empty queries
@@ -40,7 +41,7 @@ final class Payload extends BasePayload {
 	 */
 	public static function hasMatch(Request $request): bool {
 		// TODO: validate $request->payload and return true, if your plugin should handle it
-		// $queryLowercase = strtolower($request->payload);
+		$queryLowercase = strtolower($request->payload);
 		// $isUpdateSQLQuery = match ($request->endpointBundle) {
 		// 	ManticoreEndpoint::Sql, ManticoreEndpoint::Cli, ManticoreEndpoint::CliJson => str_starts_with(
 		// 		$queryLowercase, 'update '
@@ -53,6 +54,9 @@ final class Payload extends BasePayload {
 		// if (empty($matches[2])) {
 		// 	throw new QueryParseError("Cannot create table with column names missing in query: $query");
 		// }
+		$parser = new PHPSQLParser();
+		$parsed = $parser->parse($queryLowercase);
+		print_r($parsed);
 		return stripos($request->payload, 'show update-text') !== false;
 	}
 }
