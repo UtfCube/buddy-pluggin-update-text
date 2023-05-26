@@ -1,17 +1,21 @@
 {
-	"name": "manticoresoftware/buddy-plugin-template",
-	"description": "The Buddy template handler plugin",
+	"name": "manticoresoftware/buddy-plugin-update-text",
+	"description": "The Buddy UPDATE full-text fields handler plugin",
 	"type": "library",
 	"license": "GPL-2.0-or-later",
 	"autoload": {
 		"psr-4": {
-			"Manticoresearch\\Buddy\\Plugin\\Template\\": "src/"
+			"Manticoresearch\\Buddy\\Plugin\\UpdateText\\": "src/"
 		}
 	},
 	"authors": [
 		{
 			"name": "Manticore Software Co. Ltd",
 			"email": "contact@manticoresearch.com"
+		},
+		{
+			"name": "Andrey Holzakov",
+			"email": "utfcube@gmail.com"
 		}
 	],
 	"minimum-stability": "stable",

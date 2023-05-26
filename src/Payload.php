@@ -8,7 +8,7 @@
   version. You should have received a copy of the GPL license along with this
   program; if you did not, you can find it at http://www.gnu.org/
 */
-namespace Manticoresearch\Buddy\Plugin\Template;
+namespace Manticoresearch\Buddy\Plugin\UpdateText;
 
 use Manticoresearch\Buddy\Core\Network\Request;
 use Manticoresearch\Buddy\Core\Plugin\BasePayload;
