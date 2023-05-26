@@ -38,6 +38,6 @@ final class Payload extends BasePayload {
 	 */
 	public static function hasMatch(Request $request): bool {
 		// TODO: validate $request->payload and return true, if your plugin should handle it
-		return $request->payload === 'template';
+		return stripos($request->payload, 'show update-text') !== false;
 	}
 }

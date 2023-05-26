@@ -11,6 +11,7 @@
 namespace Manticoresearch\Buddy\Plugin\UpdateText;
 
 use Manticoresearch\Buddy\Core\Plugin\BaseHandler;
+use Manticoresearch\Buddy\Core\Task\Column;
 use Manticoresearch\Buddy\Core\Task\Task;
 use Manticoresearch\Buddy\Core\Task\TaskResult;
 use RuntimeException;
@@ -35,7 +36,9 @@ final class Handler extends BaseHandler {
 	public function run(Runtime $runtime): Task {
 		// TODO: your logic goes into closure and should return TaskResult as response
 		$taskFn = static function (): TaskResult {
-			return TaskResult::none();
+			return TaskResult::withRow([
+				'updatetext' => 'updatetext',
+			])->column('updatetext', Column::String);
 		};
 
 		return Task::createInRuntime(
