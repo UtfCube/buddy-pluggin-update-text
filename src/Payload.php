@@ -10,6 +10,8 @@
 */
 namespace Manticoresearch\Buddy\Plugin\UpdateText;
 
+use Manticoresearch\Buddy\Core\Error\QueryParseError;
+use Manticoresearch\Buddy\Core\ManticoreSearch\Endpoint as ManticoreEndpoint;
 use Manticoresearch\Buddy\Core\Network\Request;
 use Manticoresearch\Buddy\Core\Plugin\BasePayload;
 
@@ -38,6 +40,19 @@ final class Payload extends BasePayload {
 	 */
 	public static function hasMatch(Request $request): bool {
 		// TODO: validate $request->payload and return true, if your plugin should handle it
+		// $queryLowercase = strtolower($request->payload);
+		// $isUpdateSQLQuery = match ($request->endpointBundle) {
+		// 	ManticoreEndpoint::Sql, ManticoreEndpoint::Cli, ManticoreEndpoint::CliJson => str_starts_with(
+		// 		$queryLowercase, 'update '
+		// 	),
+		// 	default => false,
+		// };
+		// echo $isUpdateSQLQuery ? 'true' : 'false';
+		// $matches = [];
+		// preg_match_all('/\s*UPDATE\s+(.*?)\s+SET\s+(.*?)(\s+WHERE\s+(.*?)\s*$);?\s*/i', $query, $matches);
+		// if (empty($matches[2])) {
+		// 	throw new QueryParseError("Cannot create table with column names missing in query: $query");
+		// }
 		return stripos($request->payload, 'show update-text') !== false;
 	}
 }
