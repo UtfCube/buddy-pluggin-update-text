@@ -14,6 +14,7 @@ use Manticoresearch\Buddy\Core\Error\QueryParseError;
 use Manticoresearch\Buddy\Core\ManticoreSearch\Endpoint as ManticoreEndpoint;
 use Manticoresearch\Buddy\Core\Network\Request;
 use Manticoresearch\Buddy\Core\Plugin\BasePayload;
+use Manticoresearch\Buddy\Plugin\UpdateText\QueryParser\Loader;
 use PHPSQLParser\PHPSQLParser;
 
 /**
@@ -23,15 +24,18 @@ use PHPSQLParser\PHPSQLParser;
 final class Payload extends BasePayload {
 	public string $path;
 
+	/** @var string $query */
+	public array $parsed = [];
+
   /**
 	 * @param Request $request
 	 * @return static
 	 */
 	public static function fromRequest(Request $request): static {
 		$self = new static();
-		// TODO: add logic of parsing request into payload here
-		// We just need to do something, but actually its' just for PHPstan
 		$self->path = $request->path;
+		$parser = Loader::getUpdateQueryParser($request->path, $request->endpointBundle);
+		$self->parsed = $parser->parse($request->payload);
 		return $self;
 	}
 
@@ -40,23 +44,28 @@ final class Payload extends BasePayload {
 	 * @return bool
 	 */
 	public static function hasMatch(Request $request): bool {
-		// TODO: validate $request->payload and return true, if your plugin should handle it
 		$queryLowercase = strtolower($request->payload);
-		// $isUpdateSQLQuery = match ($request->endpointBundle) {
-		// 	ManticoreEndpoint::Sql, ManticoreEndpoint::Cli, ManticoreEndpoint::CliJson => str_starts_with(
-		// 		$queryLowercase, 'update '
-		// 	),
+
+		if ($request->endpointBundle === ManticoreEndpoint::Bulk) {
+			return false;
+		}
+
+		$isUpdateSQLQuery = match ($request->endpointBundle) {
+			ManticoreEndpoint::Sql, ManticoreEndpoint::Cli, ManticoreEndpoint::CliJson => str_starts_with(
+				$queryLowercase, 'update'
+			),
+			default => false,
+		};
+		// TODO: add support of /update HTTP query
+		// $isUpdateHTTPQuery = match ($request->endpointBundle) {
+		// 	ManticoreEndpoint::Update => true,
+		// 	ManticoreEndpoint::Bulk => str_starts_with($queryLowercase, '"insert"')
+		// 	|| str_starts_with($queryLowercase, '"index"'),
 		// 	default => false,
 		// };
-		// echo $isUpdateSQLQuery ? 'true' : 'false';
-		// $matches = [];
-		// preg_match_all('/\s*UPDATE\s+(.*?)\s+SET\s+(.*?)(\s+WHERE\s+(.*?)\s*$);?\s*/i', $query, $matches);
-		// if (empty($matches[2])) {
-		// 	throw new QueryParseError("Cannot create table with column names missing in query: $query");
-		// }
-		$parser = new PHPSQLParser();
-		$parsed = $parser->parse($queryLowercase);
-		print_r($parsed);
-		return stripos($request->payload, 'show update-text') !== false;
+		$isUpdateHTTPQuery = false;
+
+		$isUpdateError = str_contains($request->error, 'attribute ') && str_contains($request->error, ' not found');
+		return ($isUpdateError && ($isUpdateSQLQuery || $isUpdateHTTPQuery));
 	}
 }
