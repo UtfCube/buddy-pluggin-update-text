@@ -1,5 +1,5 @@
 {
-	"name": "manticoresoftware/buddy-plugin-update-text",
+	"name": "utfcube/buddy-plugin-update-text",
 	"description": "The Buddy UPDATE full-text fields handler plugin",
 	"type": "library",
 	"license": "GPL-2.0-or-later",
