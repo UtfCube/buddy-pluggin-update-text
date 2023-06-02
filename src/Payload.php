@@ -24,7 +24,7 @@ use PHPSQLParser\PHPSQLParser;
 final class Payload extends BasePayload {
 	public string $path;
 
-	/** @var string $query */
+	/** @var array<mixed> $parsed */
 	public array $parsed = [];
 
   /**

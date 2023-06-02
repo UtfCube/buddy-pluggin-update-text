@@ -35,7 +35,7 @@ class SQLUpdateParser extends BaseParser implements UpdateQueryParserInterface {
 
 	/**
 	 * @param string $query
-	 * @return array{name:string,cols:array<string>,colTypes:array<string>}
+	 * @return array<mixed>
 	 */
 	public function parse($query): array {
 		$this->cols = $this->colTypes = [];

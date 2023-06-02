@@ -16,7 +16,7 @@ use Manticoresearch\Buddy\Core\Error\GenericError;
 interface UpdateQueryParserInterface extends QueryParserInterface {
 	/**
 	 * @param string $query
-	 * @return array
+	 * @return array<mixed>
 	 */
 	public function parse(string $query): array;
 

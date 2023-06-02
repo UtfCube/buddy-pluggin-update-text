@@ -13,7 +13,7 @@ namespace Manticoresearch\Buddy\Plugin\UpdateText\QueryParser;
 
 use Manticoresearch\Buddy\Core\Error\QueryParseError;
 
-class JSONInsertParser extends JSONParser implements UpdateQueryParserInterface {
+class JSONUpdateParser extends JSONParser implements UpdateQueryParserInterface {
 
 	use CheckUpdateDataTrait;
 
@@ -24,7 +24,7 @@ class JSONInsertParser extends JSONParser implements UpdateQueryParserInterface 
 
 	/**
 	 * @param string $query
-	 * @return array{name:string,cols:array<string>,colTypes:array<string>}
+	 * @return array<mixed>
 	 */
 	public function parse($query): array {
 		//TODO: add json update parser
